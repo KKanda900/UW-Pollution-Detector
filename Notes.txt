@@ -1,0 +1,20 @@
+Notes:
+
+Changes Needed:
+- Need 2 directories: train and test
+- In Train have all the images
+    - label_#.extension
+- Same thing for the testing
+- Change the labels under predicition
+- DONE!
+
+Pollution in Bodies of Water (Get these images):
+- Garbage
+- Sunscreen/other tropical goods
+- Oil sweepage
+- Sewage
+- Agricultural and Aquaculture Runoff
+- Industrial Waste
+- Eutrophication
+- Carbon Dioxide
+- Noise
