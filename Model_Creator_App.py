@@ -2,7 +2,7 @@
 from PyQt5.QtWidgets import QApplication, QLineEdit, QWidget, QFormLayout, QPushButton, QComboBox, QTextEdit
 from PyQt5.QtGui import QIntValidator, QDoubleValidator, QFont
 from PyQt5.QtCore import Qt
-import sys
+import sys, pickle
 
 # Multi Image Classifier Library
 from Multi_Classification.Multi_Image_Classification import Multi_Image_Classification as img_classifier
@@ -59,7 +59,7 @@ class Model_Creator(QWidget):
         button.clicked.connect(self.save_model_clicked)
         
         self.button1 = QPushButton(widget)
-        self.button1.setText("Submit")
+        self.button1.setText("Create Model")
         self.button1.clicked.connect(self.submit_clicked)
 
         self.model_type_input = QComboBox()
@@ -90,6 +90,8 @@ class Model_Creator(QWidget):
         else:
             model = self.classifier.model['model']
         self.classifier.save_model(name_of_model, model)
+        labels = (self.labels_input.text()).split(" ")
+        self.classifier.save_labels(labels, name_of_model)
         self.textEdit.append('Model Saved Successfully')
 
     def submit_clicked(self):
