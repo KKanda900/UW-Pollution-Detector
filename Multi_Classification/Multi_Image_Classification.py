@@ -4,7 +4,7 @@ import pandas as pd
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' # dont show any tensorflow warning messages
 import matplotlib.pyplot as plt
-import cv2
+import cv2, dill
 
 # Keras libraries used for making the model
 import keras
@@ -116,12 +116,19 @@ class Multi_Image_Classification:
         complete_model = {} # define the dictionary
         complete_model['model'] = model # define the model with its key
         complete_model['history'] = history # define the history with its key
+        complete_model['labels'] = self.labels
         
         return complete_model # return the model at the end
 
     # function to save the model that was created in the create_model function
     def save_model(self, model_name, model):
         model.save('./Models/'+model_name+'.h5') # save the model in the models directory
+
+    def save_labels(self, labels, model_name):
+        f = open('./Models/{}_Labels.txt'.format(model_name), 'a')
+        for i in range(len(labels)):
+            f.write(labels[i]+'\n')
+        f.close()
 
     # ------------------------------------------------------ Define the functions used for classifiying --------------------------------------------- #
     

@@ -1,10 +1,13 @@
-# Typical Python Libraries
+# Regular Python Libraries
 import cv2, os
 import numpy as np
 from PIL import Image
 
 # Python GUI
 import PySimpleGUI as sg
+
+# Model Libraries
+import tensorflow as tf
 
 # Multi Image Classifier Library
 from Multi_Classification.Multi_Image_Classification import Multi_Image_Classification as img_classifier
@@ -14,10 +17,23 @@ from Binary_Classification.Image_Classification import Image_Classification as b
 
 class Application:
 
+    classifier = None # default is None, but in the application the user chooses between binary and categorical
+    model = None # default is None, but this is changed once the user selects the model
+
+    def pick_model(self):
+        models = []
+        for root, dirs, files in os.walk("./Models"):
+            for name in files:
+                models.append(name)
+
+        return models
+
     def run_application(self):
+        models = self.pick_model()
+
         # define the window layout => video, image, classification on the bottom
         layout = [[sg.Image(filename='', key='_IMAGE_'), sg.Image(r'', key='IMAGE')], [sg.Text(
-            'Classification: ', key='label', font='Courier 9', size=(50, 1))], [sg.Button('Take a Picture'), sg.Button('Process Image')]]
+            'Classification: ', key='label', font='Courier 9', size=(50, 1))], [sg.Listbox(values=models, size=(30, 6), key='LIST'), sg.Button('Take a Picture'), sg.Button('Process Image')]]
 
         # create the window and show it without the plot
         window = sg.Window('Pollution Detector', layout, location=(100, 100))
@@ -29,6 +45,10 @@ class Application:
         while True:
             # define these values for when there are certain events that occur in the application
             event, values = window.Read(timeout=20, timeout_key='timeout')
+            
+            if len(window.FindElement('LIST').get()) != 0:
+                self.model = tf.keras.models.load_model('./Models/'+window.FindElement('LIST').get()[0])
+                print(self.model.__dict__)
 
             # if there is no more events the application isn't running
             if event is None:
@@ -42,7 +62,7 @@ class Application:
 
             # if the user clicks 'Process Image' button then classify the image that was just taken
             if event == 'Process Image':
-                print("WHICH MODEL HOE")
+                self.classifier = img_classifier(False, labels, (h_size, v_size), epoch, batch_size)
 
             # Read image from capture device (camera)
             ret, frame = cap.read()
