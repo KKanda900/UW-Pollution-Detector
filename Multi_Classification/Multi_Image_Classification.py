@@ -43,9 +43,9 @@ class Multi_Image_Classification:
     test_labels = None # define the testing labels (same as training)
     test_images = None # define the testing images 
     
-    # ----------------------------------- Main Model ------------------------------- #
+    # ----------------------------------- Main Model Tools ------------------------------- #
     epoch = 50 # default epoch 
-    batch_size = 1 # default batch size
+    batch_size = 10 # default batch size
     model = None # define the model (Sequential for Image Classification)
 
     # ------------------------- Define the Functions for Making the model ---------------------- #
@@ -107,7 +107,7 @@ class Multi_Image_Classification:
         model.add(Flatten()) # define the seventh layer
         model.add(Dense(20,activation='relu')) # define the eigth layer
         model.add(Dense(15,activation='relu')) # define the ninth layer
-        model.add(Dense(3,activation = 'softmax')) # define the tenth layer
+        model.add(Dense(len(self.labels),activation = 'softmax')) # define the tenth layer
             
         model.compile(loss='categorical_crossentropy', metrics=['acc'], optimizer='adam') # compile the models with categorical because we are working with multiple labels
         history = model.fit(x_train,y_train,epochs=epoch,batch_size=batch_size,validation_data=(x_val,y_val)) # train the model
@@ -116,19 +116,21 @@ class Multi_Image_Classification:
         complete_model = {} # define the dictionary
         complete_model['model'] = model # define the model with its key
         complete_model['history'] = history # define the history with its key
-        complete_model['labels'] = self.labels
+        complete_model['labels'] = self.labels # save the labels into the dictionary
         
         return complete_model # return the model at the end
 
     # function to save the model that was created in the create_model function
     def save_model(self, model_name, model):
-        model.save('./Models/'+model_name+'.h5') # save the model in the models directory
+        model.save('./Models/{}.h5'.format(model_name)) # save the model in the models directory
 
+    # function to save the model's labels to be used later
     def save_labels(self, labels, model_name):
-        f = open('./Models/{}_Labels.txt'.format(model_name), 'a')
+        f = open('./Models/{}_Labels.txt'.format(model_name), 'a') # create the .txt file that will contain the labels of the model
+        # iterate through the labels when the model was first created
         for i in range(len(labels)):
-            f.write(labels[i]+'\n')
-        f.close()
+            f.write(labels[i]+'\n') # write the labels to the file
+        f.close() # after iterating through all the labels, close the file
 
     # ------------------------------------------------------ Define the functions used for classifiying --------------------------------------------- #
     

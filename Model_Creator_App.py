@@ -10,6 +10,14 @@ from Multi_Classification.Multi_Image_Classification import Multi_Image_Classifi
 # Binary Image Classifier Library
 from Binary_Classification.Image_Classification import Image_Classification as bin_classifier
 
+'''
+Model Creator Class
+
+Description: 
+1.  An application to make it easy for a user to create a model for their dataset.
+2.  Uses categorical classification and binary classification depending on the user's choice.
+3.  Currently uses PyQt5 as the base for the GUI.
+'''
 class Model_Creator(QWidget):
 
     h_size_input = None
