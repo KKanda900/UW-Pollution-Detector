@@ -23,20 +23,23 @@ class Application:
     classifier = None # default is None, but in the application the user chooses between binary and categorical
     model = None # default is None, but this is changed once the user selects the model
 
+    # finds all the models and labels in the model directory
     def pick_model(self):
-        models = []
+        models = [] # stores all the models and labels in models list
+        # iterate the models directory
         for root, dirs, files in os.walk("./Models"):
+            # iterate all the files in the directory
             for name in files:
-                models.append(name)
+                models.append(name) # append the file to show afterward
 
-        return models
+        return models # return the models at the end
 
+    # main logic behind the application
     def run_application(self):
-        models = self.pick_model()
+        models = self.pick_model() # get the list of all models and lists
 
         # define the window layout => video, image, classification on the bottom
-        layout = [[sg.Image(filename='', key='_IMAGE_'), sg.Image(r'', key='IMAGE')], [sg.Text(
-            'Classification: ', key='label', font='Courier 9', size=(50, 1))], [sg.Listbox(values=models, size=(30, 6), key='LIST'), sg.Button('Take a Picture'), sg.Button('Process Image')]]
+        layout = [[sg.Image(filename='', key='_IMAGE_'), sg.Image(r'', key='IMAGE')], [sg.Text('Classification: ', key='label', font='Courier 9', size=(50, 1))], [sg.Listbox(values=models, size=(30, 6), key='LIST'), sg.Button('Take a Picture'), sg.Button('Process Image')]]
 
         # create the window and show it without the plot
         window = sg.Window('Pollution Detector', layout, location=(100, 100))
@@ -50,9 +53,10 @@ class Application:
             # define these values for when there are certain events that occur in the application
             event, values = window.Read(timeout=20, timeout_key='timeout')
             
+            # if there is something clicked and nothing was picked before, get the name of the model
             if len(window.FindElement('LIST').get()) != 0 and var_stop != 1:
-                self.model = tf.keras.models.load_model('./Models/'+window.FindElement('LIST').get()[0])
-                var_stop += 1
+                self.model = tf.keras.models.load_model('./Models/'+window.FindElement('LIST').get()[0]) # store the model in class' model
+                var_stop += 1 # increment once to stop going into this conditional statement
 
             # if there is no more events the application isn't running
             if event is None:
@@ -67,15 +71,15 @@ class Application:
             # if the user clicks 'Process Image' button then classify the image that was just taken
             if event == 'Process Image':
                 # first get the labels used previously
-                labels_path = window.FindElement('LIST').get()[0]
-                f = open("./Models/{}".format(labels_path))
-                labels = f.read().splitlines()
-                self.classifier = img_classifier(False, labels, (200, 200), 10, 10)
-                self.classifier.model = self.model
-                app_data_labels, app_data_images = self.classifier.set_data(directory_path='./App_Data')
-                tf.reshape(app_data_images, [200, 200, 3])
-                classification = self.classifier.classify_image(image=app_data_images, model=self.classifier.model)
-                window.FindElement('label').Update(value="Classification: {}".format(classification))
+                labels_path = window.FindElement('LIST').get()[0] # get the labels path from the combobox
+                f = open("./Models/{}".format(labels_path)) # open the file
+                labels = f.read().splitlines() # get the list of labels from the file
+                f.close() # close the file after your done to save memory
+                self.classifier = img_classifier(False, labels, (200, 200), 10, 10) # create the categorical classifier object
+                self.classifier.model = self.model # store the model into the object
+                app_data_labels, app_data_images = self.classifier.set_data(directory_path='./App_Data') # get the labels and images from the app_data which should be empty afterwards
+                classification = self.classifier.classify_image(image=app_data_images, model=self.classifier.model) # get the classification
+                window.FindElement('label').Update(value="Classification: {}".format(classification)) # write the label for the user to see
 
             # Read image from capture device (camera)
             ret, frame = cap.read()
