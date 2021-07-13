@@ -1,5 +1,6 @@
 # Regular Python Libraries
 import cv2, os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import numpy as np
 from PIL import Image
 
@@ -14,6 +15,8 @@ from Multi_Classification.Multi_Image_Classification import Multi_Image_Classifi
 
 # Binary Image Classifier Library
 from Binary_Classification.Image_Classification import Image_Classification as bin_classifier
+
+# Note: This only works on categorical not binary (still have to update that portion)
 
 class Application:
 
@@ -42,13 +45,14 @@ class Application:
         # Setup the OpenCV capture device (webcam)
         cap = cv2.VideoCapture(0)
         # iterate through infinitely until the user closes the application
+        var_stop = 0 # variable to stop when model is chosen
         while True:
             # define these values for when there are certain events that occur in the application
             event, values = window.Read(timeout=20, timeout_key='timeout')
             
-            if len(window.FindElement('LIST').get()) != 0:
+            if len(window.FindElement('LIST').get()) != 0 and var_stop != 1:
                 self.model = tf.keras.models.load_model('./Models/'+window.FindElement('LIST').get()[0])
-                print(self.model.__dict__)
+                var_stop += 1
 
             # if there is no more events the application isn't running
             if event is None:
@@ -62,7 +66,16 @@ class Application:
 
             # if the user clicks 'Process Image' button then classify the image that was just taken
             if event == 'Process Image':
-                self.classifier = img_classifier(False, labels, (h_size, v_size), epoch, batch_size)
+                # first get the labels used previously
+                labels_path = window.FindElement('LIST').get()[0]
+                f = open("./Models/{}".format(labels_path))
+                labels = f.read().splitlines()
+                self.classifier = img_classifier(False, labels, (200, 200), 10, 10)
+                self.classifier.model = self.model
+                app_data_labels, app_data_images = self.classifier.set_data(directory_path='./App_Data')
+                tf.reshape(app_data_images, [200, 200, 3])
+                classification = self.classifier.classify_image(image=app_data_images, model=self.classifier.model)
+                window.FindElement('label').Update(value="Classification: {}".format(classification))
 
             # Read image from capture device (camera)
             ret, frame = cap.read()
