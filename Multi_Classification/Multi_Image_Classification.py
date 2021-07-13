@@ -139,7 +139,7 @@ class Multi_Image_Classification:
         checkImage = image[0:1] # grab the image from the image arg
         checklabel = image[0:1] # grab the image label from the image arg
 
-        predict = model.predict(np.array(image)) # predict the label of the image given
+        predict = model.predict(np.array(checkImage)) # predict the label of the image given
 
         return self.labels[np.argmax(predict)] # return the predicted label from the labels provided by the user
 
