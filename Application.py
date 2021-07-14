@@ -1,6 +1,6 @@
 # Regular Python Libraries
 import cv2, os
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' # get rid of any TF warning messages
 import numpy as np
 from PIL import Image
 
@@ -17,10 +17,19 @@ from Multi_Classification.Multi_Image_Classification import Multi_Image_Classifi
 from Binary_Classification.Image_Classification import Image_Classification as bin_classifier
 
 # Note: This only works on categorical not binary (still have to update that portion)
+'''
+Application Class
 
+Description:
+1.  Contains all the logic behind the application
+    a. Take a picture of the object.
+    b. Pick the model you want to use.
+    c. Process the image to identify the image.
+'''
 class Application:
 
     classifier = None # default is None, but in the application the user chooses between binary and categorical
+    model_type = None # default is None but this identifies the model if it is a binary model or categorical
     model = None # default is None, but this is changed once the user selects the model
 
     # finds all the models and labels in the model directory
@@ -56,8 +65,15 @@ class Application:
             # if there is something clicked and nothing was picked before, get the name of the model
             if len(window.FindElement('LIST').get()) != 0 and var_stop != 1:
                 self.model = tf.keras.models.load_model('./Models/'+window.FindElement('LIST').get()[0]) # store the model in class' model
-                var_stop += 1 # increment once to stop going into this conditional statement
+                
+                # identify the type of model
+                model_used = window.FindElement('LIST').get()[0] # gets the name of the model being used
+                model_tokenized = model_used.split('_') # splits the path into [Name_1, Name_2, ..., <Categorical or Binary>.h5]
+                get_type = model_tokenized[len(model_tokenized)-1].split('.h5') # [<Categorical or Binary>, '']
+                self.model_type = get_type[0] # get the model from the first element in the list
 
+                var_stop += 1 # increment once to stop going into this conditional statement
+            
             # if there is no more events the application isn't running
             if event is None:
                 break
@@ -70,16 +86,26 @@ class Application:
 
             # if the user clicks 'Process Image' button then classify the image that was just taken
             if event == 'Process Image':
-                # first get the labels used previously
+                # ----------------- First get the labels used previously --------------------------------------------- #
                 labels_path = window.FindElement('LIST').get()[0] # get the labels path from the combobox
                 f = open("./Models/{}".format(labels_path)) # open the file
                 labels = f.read().splitlines() # get the list of labels from the file
                 f.close() # close the file after your done to save memory
-                self.classifier = img_classifier(False, labels, (200, 200), 10, 10) # create the categorical classifier object
+                if self.model_type == 'categorical':
+                    self.classifier = img_classifier(False, labels, (200, 200), 10, 10) # create the categorical classifier object
+                else:
+                    print('Binary Version Goes Here Line 97')
                 self.classifier.model = self.model # store the model into the object
                 app_data_labels, app_data_images = self.classifier.set_data(directory_path='./App_Data') # get the labels and images from the app_data which should be empty afterwards
                 classification = self.classifier.classify_image(image=app_data_images, model=self.classifier.model) # get the classification
                 window.FindElement('label').Update(value="Classification: {}".format(classification)) # write the label for the user to see
+
+                # ------------------------ Clear the App Data Directory ---------------------------------------------------- #
+                # iterate through all the files in the directory choosen
+                for root, dirs, files in os.walk("./App_Data", topdown=False):
+                    # iterate through the files only of the directory
+                    for file in files:
+                        os.remove(file) # delete the file 
 
             # Read image from capture device (camera)
             ret, frame = cap.read()
