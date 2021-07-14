@@ -141,10 +141,6 @@ class Multi_Image_Classification:
 
         predict = model.predict(np.array(checkImage)) # predict the label of the image given
 
-        results = model.predict(checkImage)
-        for result in results:
-            print(str(result))
-
         return self.labels[np.argmax(predict)] # return the predicted label from the labels provided by the user
 
 

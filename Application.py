@@ -20,7 +20,7 @@ from Binary_Classification.Image_Classification import Image_Classification as b
 Application Class
 
 Description:
-1.  Contains all the logic behind the application
+1.  Contains all the logic behind the application.
     a. Take a picture of the object.
     b. Pick the model you want to use.
     c. Process the image to identify the image.
@@ -97,8 +97,12 @@ class Application:
                     classification = self.classifier.classify_image(image=app_data_images, model=self.classifier.model) # get the classification
                     window.FindElement('label').Update(value="Classification: {}".format(classification)) # write the label for the user to see
                 elif self.model_type == 'binary':
-                    self.classifier = bin_classifier(200, True, False, labels, 10)
-                    self.classifier.model = self.model
+                    self.classifier = bin_classifier(200, True, False, labels, 10) # create the binary classification object
+                    self.classifier.model = self.model # store the model into the model object
+                    app_data_labels, app_data_images = self.classifier.set_data(directory_path='./App_Data') # get the labels and images from the app_data which should be empty afterwards
+                    classification_num = self.classifier.model.predict(app_data_images[0::1]) # get the number for classification
+                    predicted_label = labels[np.argmax(classification_num)] # get the predicted label
+                    window.FindElement('label').Update(value="Classification: {}".format(predicted_label)) # write the label for the user to see
 
                 # ------------------------ Clear the App Data Directory ---------------------------------------------------- #
                 # iterate through all the files in the directory choosen
