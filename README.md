@@ -26,11 +26,11 @@ Write description of the intentions of the model maker and why it is used or imp
 
 Write instructions on how to install the model maker **probably going to be some sort of exe file**
 
-## About the Main Application
+## About the Underwater Pollution Detector
 
 Write description of the intentions of the application and why it is used or important.
 
-### How to Install the Application
+### How to Install the UW Pollution Detector
 
 Write instructions on how to install the application **probably going to be some sort of exe file**
 
