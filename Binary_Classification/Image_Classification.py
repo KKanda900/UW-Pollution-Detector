@@ -47,6 +47,28 @@ class Image_Classification:
                 img = img.resize((self.img_size, self.img_size))
                 # after resizing save the image
                 img.save(f_img)
+
+    # define the labels and images depending on the directory path
+    def set_data(self, directory_path):
+        data_labels = [] # define the set of labels according to the name of the file
+        data_images = [] # define the images
+        # iterate through all the images in the directory
+        for filename in os.listdir(directory_path): 
+            if filename.split('.')[1] == 'jpg': # all the images should be defined as a jpg
+                # Get the values of the images at the directory path
+                img = cv2.imread(os.path.join(directory_path,filename))
+                
+                # Spliting file names and storing the labels for image in list
+                data_labels.append(filename.split('_')[0])
+                
+                # Resize all images to a specific shape
+                img = cv2.resize(img,self.shape)
+                
+                data_images.append(img) # append the image
+        data_labels = pd.get_dummies(data_labels).values # Get the categorical data
+        data_images = np.array(data_images) # Define the image array as a np array for fitting
+
+        return data_labels, data_images # return the labels, images for the specific directory
         
     # initialize the tools for training the model and used to create the model
     def __init__(self, img_size, resize, create_model, labels, epoch):
