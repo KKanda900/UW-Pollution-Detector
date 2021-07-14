@@ -16,7 +16,6 @@ from Multi_Classification.Multi_Image_Classification import Multi_Image_Classifi
 # Binary Image Classifier Library
 from Binary_Classification.Image_Classification import Image_Classification as bin_classifier
 
-# Note: This only works on categorical not binary (still have to update that portion)
 '''
 Application Class
 
@@ -93,12 +92,13 @@ class Application:
                 f.close() # close the file after your done to save memory
                 if self.model_type == 'categorical':
                     self.classifier = img_classifier(False, labels, (200, 200), 10, 10) # create the categorical classifier object
-                else:
-                    print('Binary Version Goes Here Line 97')
-                self.classifier.model = self.model # store the model into the object
-                app_data_labels, app_data_images = self.classifier.set_data(directory_path='./App_Data') # get the labels and images from the app_data which should be empty afterwards
-                classification = self.classifier.classify_image(image=app_data_images, model=self.classifier.model) # get the classification
-                window.FindElement('label').Update(value="Classification: {}".format(classification)) # write the label for the user to see
+                    self.classifier.model = self.model # store the model into the object
+                    app_data_labels, app_data_images = self.classifier.set_data(directory_path='./App_Data') # get the labels and images from the app_data which should be empty afterwards
+                    classification = self.classifier.classify_image(image=app_data_images, model=self.classifier.model) # get the classification
+                    window.FindElement('label').Update(value="Classification: {}".format(classification)) # write the label for the user to see
+                elif self.model_type == 'binary':
+                    self.classifier = bin_classifier(200, True, False, labels, 10)
+                    self.classifier.model = self.model
 
                 # ------------------------ Clear the App Data Directory ---------------------------------------------------- #
                 # iterate through all the files in the directory choosen
