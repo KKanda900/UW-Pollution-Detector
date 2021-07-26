@@ -8,8 +8,16 @@ A object detector that has the capabilities to detect any type of pollution in a
 
 ## How to use the Model Maker
 
+To start the model maker:
 ```Python
-Python Code goes here
+from PyQt5.QtWidgets import QApplication
+from Model_Creator_App import Model_Creator
+import sys
+
+app = QApplication(sys.argv)
+win = Model_Creator()
+win.show()
+sys.exit(app.exec_())
 ```
 
 ## How to use the Application
