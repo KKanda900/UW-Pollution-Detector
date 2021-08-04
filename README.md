@@ -10,7 +10,9 @@ A object detector that has the capabilities to detect any type of pollution in a
 
 To start the model maker:
 ```Python
-from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QApplication, QLineEdit, QWidget, QFormLayout, QPushButton, QComboBox, QTextEdit
+from PyQt5.QtGui import QIntValidator, QDoubleValidator, QFont
+from PyQt5.QtCore import Qt
 from Model_Creator_App import Model_Creator
 import sys
 
@@ -20,15 +22,26 @@ win.show()
 sys.exit(app.exec_())
 ```
 
+Explain more specific stuff about the model creator.
+
 ## How to use the Application
 
 ```Python
-Python code goes here
+from Application import Application
+
+app = Application()
+app.run_application()
 ```
+
+Explain more specific stuff about the Application
 
 ## About the Model Maker
 
 Write description of the intentions of the model maker and why it is used or important.
+
+With many image classifiers out for public use, there wasn't any that allowed for the user to make custom models. The main intentions of this model maker was to allow users to create custom image classifier models to use for their own use. The model maker application takes in ....
+
+Insert link to model maker github here.
 
 ### How to Install The Model Maker
 

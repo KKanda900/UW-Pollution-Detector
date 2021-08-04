@@ -54,19 +54,17 @@ class Multi_Image_Classification:
     def set_data(self, directory_path):
         data_labels = [] # define the set of labels according to the name of the file
         data_images = [] # define the images
+        
         # iterate through all the images in the directory
         for filename in os.listdir(directory_path): 
-            if filename.split('.')[1] == 'jpg': # all the images should be defined as a jpg
-                # Get the values of the images at the directory path
-                img = cv2.imread(os.path.join(directory_path,filename))
-                
-                # Spliting file names and storing the labels for image in list
-                data_labels.append(filename.split('_')[0])
-                
-                # Resize all images to a specific shape
-                img = cv2.resize(img,self.shape)
-                
-                data_images.append(img) # append the image
+            # Get the values of the images at the directory path
+            img = cv2.imread(os.path.join(directory_path, filename))
+            # Spliting file names and storing the labels for image in list
+            data_labels.append(filename.split('_')[0])
+            # Resize all images to a specific shape
+            img = cv2.resize(img, self.shape)
+            data_images.append(img)  # append the image
+        
         data_labels = pd.get_dummies(data_labels).values # Get the categorical data
         data_images = np.array(data_images) # Define the image array as a np array for fitting
 
@@ -96,7 +94,7 @@ class Multi_Image_Classification:
 
     # create the model to be used for predicition
     def create_model(self, epoch, batch_size, x_train, y_train, x_val, y_val):
-        model= Sequential() # define the model as sequential
+        model = Sequential() # define the model as sequential
         
         model.add(Conv2D(kernel_size=(3,3), filters=32, activation='tanh', input_shape=(200,200,3,))) # define the first layer
         model.add(Conv2D(filters=30,kernel_size = (3,3),activation='tanh')) # define the second layer
@@ -107,7 +105,7 @@ class Multi_Image_Classification:
         model.add(Flatten()) # define the seventh layer
         model.add(Dense(20,activation='relu')) # define the eigth layer
         model.add(Dense(15,activation='relu')) # define the ninth layer
-        model.add(Dense(len(self.labels),activation = 'softmax')) # define the tenth layer
+        model.add(Dense(len(self.labels),activation = 'softmax')) # define the tenth layer (according to the number of labels for the model)
             
         model.compile(loss='categorical_crossentropy', metrics=['acc'], optimizer='adam') # compile the models with categorical because we are working with multiple labels
         history = model.fit(x_train,y_train,epochs=epoch,batch_size=batch_size,validation_data=(x_val,y_val)) # train the model
@@ -129,18 +127,20 @@ class Multi_Image_Classification:
         f = open('./Models/{}_Labels.txt'.format(model_name), 'a') # create the .txt file that will contain the labels of the model
         # iterate through the labels when the model was first created
         for i in range(len(labels)):
-            f.write(labels[i]+'\n') # write the labels to the file
-        f.close() # after iterating through all the labels, close the file
+            f.write("{}\n".format(labels[i])) # write the labels to the file
+        f.close() # after iterating through all the labels, close the file so the space can be free
 
     # ------------------------------------------------------ Define the functions used for classifiying --------------------------------------------- #
     
     # classifies images based on the model and the selected image
     def classify_image(self, image, model):
-        checkImage = image[0:1] # grab the image from the image arg
-        checklabel = image[0:1] # grab the image label from the image arg
+        
+        checkImage = image[0]
+        checklabel = image[0]
 
-        predict = model.predict(np.array(checkImage)) # predict the label of the image given
-
-        return self.labels[np.argmax(predict)] # return the predicted label from the labels provided by the user
+        predict = model.predict(np.array(checkImage))
+        predicted_label = self.labels[np.argmax(predict)]
+                
+        return predicted_label # return the predicted label from the labels provided by the user
 
 
