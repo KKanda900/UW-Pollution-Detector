@@ -57,6 +57,7 @@ class Application:
         cap = cv2.VideoCapture(0)
         # iterate through infinitely until the user closes the application
         var_stop = 0 # variable to stop when model is chosen
+        img_num = 0 # keep track of the images that you have taken pictures of in the application
         while True:
             # define these values for when there are certain events that occur in the application
             event, values = window.Read(timeout=20, timeout_key='timeout')
@@ -79,9 +80,10 @@ class Application:
 
             # if the user clicks the 'Take a Picture' button clear the directory then take a picture
             if event == 'Take a Picture':
-                cv2.imwrite('./App_Data/file.png', frame) # write the image to the directory
-                img = cv2.imencode('.png', np.float32(Image.open("./App_Data/file.png")))[1].tobytes() # to display the image in the GUI convert it to float32
+                cv2.imwrite('./App_Data/Image_{}.png'.format(img_num), frame) # write the image to the directory
+                img = cv2.imencode('.png', np.float32(Image.open("./App_Data/Image_{}.png".format(img_num))))[1].tobytes() # to display the image in the GUI convert it to float32
                 window.FindElement('IMAGE').Update(data=img) # replaces the image and add it to the GUI according to the key
+                img_num += 1 # increment the img_num so each photo you take is distinct
 
             # if the user clicks 'Process Image' button then classify the image that was just taken
             if event == 'Process Image':
@@ -103,13 +105,6 @@ class Application:
                     classification_num = self.classifier.model.predict(app_data_images[0::1]) # get the number for classification
                     predicted_label = labels[np.argmax(classification_num)] # get the predicted label
                     window.FindElement('label').Update(value="Classification: {}".format(predicted_label)) # write the label for the user to see
-
-                # ------------------------ Clear the App Data Directory ---------------------------------------------------- #
-                # iterate through all the files in the directory choosen
-                for root, dirs, files in os.walk("./App_Data", topdown=False):
-                    # iterate through the files only of the directory
-                    for file in files:
-                        os.remove(file) # delete the file 
 
             # Read image from capture device (camera)
             ret, frame = cap.read()

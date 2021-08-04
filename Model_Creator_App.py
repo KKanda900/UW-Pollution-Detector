@@ -12,7 +12,6 @@ from Binary_Classification.Image_Classification import Image_Classification as b
 
 '''
 Model Creator Class
-
 Description: 
 1.  An application to make it easy for a user to create a model for their dataset.
 2.  Uses categorical classification and binary classification depending on the user's choice.
@@ -67,6 +66,7 @@ class Model_Creator(QWidget):
                 layout.addRow(input_)
         return layout
 
+    # save the created model
     def save_model_clicked(self):
         name_of_model = self.name_of_model_input.text()
         model = None
@@ -79,6 +79,7 @@ class Model_Creator(QWidget):
         self.classifier.save_labels(labels, name_of_model)
         self.textEdit.append('Model Saved Successfully')
 
+    # create the model based on the specifications listed
     def submit_clicked(self):
         if self.model_type_input.currentText() == 'Categorical':
             h_size = int(self.h_size_input.text())
@@ -95,6 +96,7 @@ class Model_Creator(QWidget):
             self.classifier = bin_classifier(size, True, True, labels, epoch)
             self.textEdit.append('Model Created. Press save to save the model to be used in the classifier application.')
     
+    # when you initialize the object window, create these widgets
     def __init__(self, parent=None):
         super().__init__(parent)
 
