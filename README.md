@@ -42,7 +42,7 @@ app = Application()
 app.run_application()
 ```
 
-Explain more specific stuff about the Application
+Once you have launched the application, on the bottom left you are given the models and the labels that can be used. First click on the .h5 model to be used in the session of the application. Afterwards click on the .txt file with the labels for that model. After that is completed **take a picture** of the object needed to be classified. Once a photo is taken it will appear to the right of the camera. Which you can classify by pressing the **process image** button.
 
 ## About the Model Maker
 
