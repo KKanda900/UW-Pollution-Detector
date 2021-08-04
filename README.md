@@ -46,11 +46,9 @@ Once you have launched the application, on the bottom left you are given the mod
 
 ## About the Model Maker
 
-Write description of the intentions of the model maker and why it is used or important.
+With many model makers out for public use, there wasn't any that allowed for the user to make custom models easily. The main intentions of this model maker was to allow users to create custom image classifier models to use for their own use. With not many options for custom image classifiers I though the model maker would be a great idea to have for people that want their own custom models. The model maker application gives the users all the necessary inputs to create the model which once they are done entering those inputs can watch in the terminal to see the progress of creating the model. If the model is to their standards they can save the model or go back into it and add more photos, change inputs, etc.
 
-With many image classifiers out for public use, there wasn't any that allowed for the user to make custom models. The main intentions of this model maker was to allow users to create custom image classifier models to use for their own use. The model maker application takes in ....
-
-Insert link to model maker github here.
+[REPO](https://github.com/KKanda900/Model-Maker)
 
 ### How to Install The Model Maker
 
@@ -58,7 +56,7 @@ Write instructions on how to install the model maker **probably going to be some
 
 ## About the Underwater Pollution Detector
 
-Write description of the intentions of the application and why it is used or important.
+The Underwater Pollution Detector was made for a research project I was working on in Rutgers University that involved helping in cleaning up the water to make for a safer and better environment. The primary intentions of the software was to be deployed along side an underwater robot equipped with a raspberry pi to monitor the water then if there pollution objects discovered the robot would take a picture of it, classify what the pollution is and send it to the right people to get more hands on to cleaning up that portion of the water. Given a model trained on all types of pollution in the water it would classify it based on that and via IoT it would transmit that information to a clean up crew that can recieve that information and do what they need to do. 
 
 ### How to Install the UW Pollution Detector
 
