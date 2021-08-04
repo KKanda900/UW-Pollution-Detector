@@ -23,12 +23,13 @@ sys.exit(app.exec_())
 ```
 
 Once you have launched the model maker application, the application lists some inputs needed in order to create the model:
-    1. The type of model (binary or categorical)
-    2. The horizontal size for when the application does image resizing
-    3. The vertical size for when the application does image resizing
-    4. The labels for the model
-    5. The epochs for when you train the model
-    6. The batch size for when you train the model
+
+1. The type of model (binary or categorical)
+2. The horizontal size for when the application does image resizing
+3. The vertical size for when the application does image resizing
+4. The labels for the model
+5. The epochs for when you train the model
+6. The batch size for when you train the model
 
 Once you have inserted all the necessary inputs, you have to create the model first. Then if the training went well and you have accurate results in the training the user is given the option to save the model to use in their own application.
 
