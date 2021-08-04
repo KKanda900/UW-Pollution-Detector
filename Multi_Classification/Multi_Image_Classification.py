@@ -6,9 +6,9 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' # dont show any tensorflow warning mess
 import matplotlib.pyplot as plt
 import cv2, dill
 
-# Keras libraries used for making the model
-import keras
-from keras.utils import to_categorical
+# Keras libraries used for making the model and tensorflow
+import tensorflow, keras
+from tensorflow.keras.utils import to_categorical
 from keras.layers import Dense,Conv2D,Flatten,MaxPool2D,Dropout
 from keras.models import Sequential
 
