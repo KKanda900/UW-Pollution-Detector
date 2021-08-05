@@ -56,7 +56,7 @@ The Underwater Pollution Detector was made for a research project I was working 
 
 ## How to Install U.W. Pollution Detector, the Model Maker and the Python libraries
 
-***Note these instructions are only for Windows 10 users for now, updated instructions will be posted once completed***
+***Note these instructions are only for Windows 10 users for now, updated instructions will be posted once completed.***
 
 In either cmd, powershell or Windows Terminal, type in:
 
