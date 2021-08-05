@@ -3,8 +3,7 @@ import numpy as np
 import pandas as pd 
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' # dont show any tensorflow warning messages
-import matplotlib.pyplot as plt
-import cv2, dill
+import cv2
 
 # Keras libraries used for making the model and tensorflow
 import tensorflow, keras
