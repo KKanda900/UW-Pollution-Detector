@@ -48,19 +48,23 @@ Once you have launched the application, on the bottom left you are given the mod
 
 With many model makers out for public use, there wasn't any that allowed for the user to make custom models easily. The main intentions of this model maker was to allow users to create custom image classifier models to use for their own use. With not many options for custom image classifiers I though the model maker would be a great idea to have for people that want their own custom models. The model maker application gives the users all the necessary inputs to create the model which once they are done entering those inputs can watch in the terminal to see the progress of creating the model. If the model is to their standards they can save the model or go back into it and add more photos, change inputs, etc.
 
-[REPO](https://github.com/KKanda900/Model-Maker)
-
-### How to Install The Model Maker
-
-Write instructions on how to install the model maker **probably going to be some sort of exe file**
+[Go to the Repository](https://github.com/KKanda900/Model-Maker)
 
 ## About the Underwater Pollution Detector
 
 The Underwater Pollution Detector was made for a research project I was working on in Rutgers University that involved helping in cleaning up the water to make for a safer and better environment. The primary intentions of the software was to be deployed along side an underwater robot equipped with a raspberry pi to monitor the water then if there pollution objects discovered the robot would take a picture of it, classify what the pollution is and send it to the right people to get more hands on to cleaning up that portion of the water. Given a model trained on all types of pollution in the water it would classify it based on that and via IoT it would transmit that information to a clean up crew that can recieve that information and do what they need to do. 
 
-### How to Install the UW Pollution Detector
+## How to Install U.W. Pollution Detector, the Model Maker and the Python libraries
 
-Write instructions on how to install the application **probably going to be some sort of exe file**
+***Note these instructions are only for Windows 10 users for now, updated instructions will be posted once completed***
+
+In either cmd, powershell or Windows Terminal, type in:
+
+```shell, sh, zsh, bash 
+python Setup.py
+```
+
+Once you execute the python script, the script will prompt you with installing all the necessary libraries to run the applications manually or to install the Application and Model Creator Application. Once you have setup what you need to setup, simply type in **quit** to quit the application.
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
