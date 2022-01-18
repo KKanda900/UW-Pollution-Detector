@@ -6,7 +6,7 @@ A object detector that has the capabilities to detect any type of pollution in a
 
 ## Usage
 
-## How to use the Model Maker
+### How to use the Model Maker
 
 To start the model maker:
 ```Python
@@ -33,7 +33,7 @@ Once you have launched the model maker application, the application lists some i
 
 Once you have inserted all the necessary inputs, you have to create the model first. Then if the training went well and you have accurate results in the training the user is given the option to save the model to use in their own application.
 
-## How to use the Application
+### How to use the Application
 
 ```Python
 from Application import Application
